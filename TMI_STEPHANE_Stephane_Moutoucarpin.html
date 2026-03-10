@@ -161,7 +161,8 @@ button[type="submit"].ready{animation:pb 2s infinite}
       <label>N° IXBAT / Identifiant <span class="req">*</span></label>
       <select id="materiel" onchange="onMat()">
         <option value="">— Sélectionner —</option>
-        <option value="MULTI">MULTI — MULTI-ENGINS</option>
+        <option value="LOCATION">LOCATION — Location - location matériel</option>
+<option value="MULTI">MULTI — MULTI-ENGINS</option>
 <option value="POMPE A BOUE">POMPE A BOUE — POMPE A BOUE</option>
 <option value="BIDON">BIDON — BIDON</option>
 <option value="CUVE">CUVE — CUVE</option>
@@ -337,7 +338,14 @@ button[type="submit"].ready{animation:pb 2s infinite}
       <label>Chantier d'affectation <span class="req">*</span></label>
       <select id="chantier" onchange="touch('chantier')">
         <option value="">— Sélectionner —</option>
-        <option>BERGEVIN - Sikoa</option>
+        <option>AEP SAINT-ANNE impasse VALLIER - Département</option>
+<option>AEP SAINT FRANCOIS RD116 Tranche Delgres - Département</option>
+<option>FORAGE D'EAU - SMGEAG</option>
+<option>MICROPIEUX DE LA RESIDENCE LES GOYAVIERS - GTM</option>
+<option>TS RD6 Vieux Fort Route de Tibois coté droit - Département</option>
+<option>RD13 école Nathalien ETNA à Vieux-Habitants - Département</option>
+<option>Route de Tibois Vieux Fort - Département</option>
+<option>BERGEVIN - Sikoa</option>
 <option>DEPOT - FRAIS GENERAUX</option>
 <option>BELLE PLAINE - Gosier</option>
 <option>LOCATION</option>
@@ -388,7 +396,7 @@ button[type="submit"].ready{animation:pb 2s infinite}
 </div>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyXWrSZXcC_MjYTHgVvLuowekjkzwudLiG2lxGnMtRb03VL16GTz3D4FjKnSGlOxR4zFA/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbynrX_TWIYo045jZFJnDV-tPSG7DQ2R3gJRoHequhMSybfDkj_oINSmBOUM-tRBP3LC-w/exec";
 const CLOUDINARY_CLOUD = "diykly4wp";
 const CLOUDINARY_PRESET = "tmi_carburant";
 
@@ -485,6 +493,7 @@ function onMat(){
   }else{
     hint.classList.remove('show');
   }
+  loadLastCompteur(v);
 }
 function onCuve(){
   touch('cuve');
@@ -504,6 +513,23 @@ function setCarb(val){
   });
   document.getElementById('carburant').value=val;
   touched['carburant']=true;touch('carburant');
+}
+
+function loadLastCompteur(materielId) {
+  if (!materielId) return;
+  fetch(SCRIPT_URL + '?materiel=' + encodeURIComponent(materielId))
+    .then(r => r.json())
+    .then(data => {
+      if (data.status === 'success' && data.compteur !== '') {
+        const field = document.getElementById('compteur');
+        if (field && !field.value) {
+          field.value = data.compteur;
+          field.style.borderColor = 'var(--success)';
+          field.title = 'Dernière valeur enregistrée';
+        }
+      }
+    })
+    .catch(() => {});
 }
 function onPhoto(input){
   if(!input.files||!input.files[0]) return;
@@ -606,7 +632,6 @@ function newForm(){
   document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
   document.querySelectorAll('.field').forEach(f=>{f.classList.remove('error','valid');});
   document.getElementById('mat-hint').classList.remove('show');
-  rmPhoto({preventDefault:()=>{},stopPropagation:()=>{}});
   rmPhoto({preventDefault:()=>{},stopPropagation:()=>{}});
   touched={};
   document.getElementById('date-saisie').value=new Date().toISOString().split('T')[0];
