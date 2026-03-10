@@ -300,33 +300,35 @@ button[type="submit"].ready{animation:pb 2s infinite}
     </div>
   </div>
 
-  <div class="sl">Photo compteur km/h <span class="badge-rec">Recommandee</span></div>
+
+    <div class="sl">Photo compteur km/h <span class="badge-rec">Recommandee</span></div>
   <div class="card">
     <div class="field">
-      <label>Compteur / Jaugeage <span class="opt">optionnel</span></label>
+      <label>Photo Compteur <span class="opt">optionnel</span></label>
       <div class="photo-zone" id="photo-zone">
         <input type="file" id="photo-input" accept="image/*" capture="environment" onchange="onPhoto(this)">
         <span class="pi">📷</span>
         <span class="pl2">Prendre une photo</span>
-        <span class="ph">Compteur km ou releve de jauge avant/apres le plein</span>
+        <span class="ph">Compteur km ou releve de jauge</span>
         <img id="photo-preview" alt="Photo">
         <span class="photo-badge">Photo OK</span>
         <button class="photo-rm" onclick="rmPhoto(event)">Supprimer</button>
       </div>
     </div>
   </div>
-  <div class="field" style="margin-top:18px">
-    <div class="sl">Photo jauge carburant <span class="badge-rec">Recommandee</span></div>
-    <div class="photo-zone" id="photo-zone2">
-      <input type="file" id="photo-input2" accept="image/*" capture="environment" onchange="onPhoto2(this)">
-      <span class="pi">&#128247;</span>
-      <span class="pl2">Prendre une photo de la jauge</span>
-      <span class="ph">Niveau visible avant/apres</span>
-      <img id="photo-preview2" alt="Photo jauge" style="width:100%;max-height:230px;object-fit:cover;border-radius:12px;display:none">
-      <span class="photo-badge">Photo OK</span>
-      <button class="photo-rm" onclick="rmPhoto2(event)">Supprimer</button>
+  <div class="sl">Photo jauge carburant <span class="badge-rec">Recommandee</span></div>
+  <div class="card">
+    <div class="field">
+      <div class="photo-zone" id="photo-zone2">
+        <input type="file" id="photo-input2" accept="image/*" capture="environment" onchange="onPhoto2(this)">
+        <span class="pi">📷</span>
+        <span class="pl2">Prendre une photo de la jauge</span>
+        <span class="ph">Niveau visible avant/apres</span>
+        <img id="photo-preview2" alt="Photo jauge" style="width:100%;max-height:230px;object-fit:cover;border-radius:12px;display:none">
+        <span class="photo-badge">Photo OK</span>
+        <button class="photo-rm" onclick="rmPhoto2(event)">Supprimer</button>
+      </div>
     </div>
-  </div
   </div>
 
   <div class="sl">Chantier</div>
@@ -387,6 +389,29 @@ button[type="submit"].ready{animation:pb 2s infinite}
 
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyXWrSZXcC_MjYTHgVvLuowekjkzwudLiG2lxGnMtRb03VL16GTz3D4FjKnSGlOxR4zFA/exec";
+const CLOUDINARY_CLOUD = "diykly4wp";
+const CLOUDINARY_PRESET = "tmi_carburant";
+
+async function uploadToCloudinary(base64Data, fileName) {
+  if (!base64Data || base64Data === "") return "";
+  try {
+    const blob = await fetch(base64Data).then(r => r.blob());
+    const formData = new FormData();
+    formData.append("file", blob, fileName);
+    formData.append("upload_preset", CLOUDINARY_PRESET);
+    formData.append("folder", "tmi_carburant");
+    const res = await fetch("https://api.cloudinary.com/v1_1/" + CLOUDINARY_CLOUD + "/image/upload", {
+      method: "POST",
+      body: formData
+    });
+    const data = await res.json();
+    return data.secure_url || "";
+  } catch(err) {
+    console.error("Cloudinary error:", err);
+    return "";
+  }
+}
+
 const RESP_NOM   = "Clyde Pelmar";
 const RESP_ID    = "CLYDE";
 const CUVE_CARB  = {"2 GNR 600":"GNR","3 GNR 600":"GNR","4 GNR 400":"GNR","GR STATION":"Gasoil","SP STATION":"SP Station"};
@@ -515,7 +540,43 @@ function rmPhoto(e){
   document.getElementById('photo-input').value='';
   document.getElementById('photo-zone').classList.remove('has-photo');
 }
-function submitForm(){
+
+function onPhoto(input){
+  if(!input.files||!input.files[0]) return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    photoB64=e.target.result;
+    document.getElementById('photo-preview').src=photoB64;
+    document.getElementById('photo-zone').classList.add('has-photo');
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+function onPhoto2(inp){
+  if(!inp.files||!inp.files[0])return;
+  var r=new FileReader();
+  r.onload=function(ev){
+    document.getElementById('photo-preview2').src=ev.target.result;
+    document.getElementById('photo-preview2').style.display='block';
+    document.getElementById('photo-zone2').classList.add('has-photo');
+    photoB642=ev.target.result;
+  };
+  r.readAsDataURL(inp.files[0]);
+}
+function rmPhoto2(e){
+  if(e){e.preventDefault();e.stopPropagation();}
+  document.getElementById('photo-input2').value='';
+  document.getElementById('photo-preview2').style.display='none';
+  document.getElementById('photo-zone2').classList.remove('has-photo');
+  photoB642=null;
+}
+function rmPhoto(e){
+  e.preventDefault();e.stopPropagation();
+  photoB64=null;
+  document.getElementById('photo-preview').src='';
+  document.getElementById('photo-input').value='';
+  document.getElementById('photo-zone').classList.remove('has-photo');
+}
+async function submitForm(){
   let allOk=true;
   REQ.forEach(r=>{
     touched[r.id]=true;const ok=isOk(r);
@@ -544,6 +605,9 @@ function submitForm(){
     photo2:photoB642||"",
   };
   document.getElementById('sending').classList.add('show');
+  const baseName = entry.date.replace(/\//g,'-') + '_' + entry.responsable_id + '_' + entry.materiel;
+  entry.photo = await uploadToCloudinary(photoB64, baseName + '_COMPTEUR.jpg');
+  entry.photo2 = await uploadToCloudinary(photoB642, baseName + '_JAUGE.jpg');
   fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify(entry)})
   .then(r=>r.json())
   .then(data=>{
@@ -551,6 +615,8 @@ function submitForm(){
     if(data.status==='success'){
       const rp=document.getElementById('rphoto');
       if(photoB64){rp.src=photoB64;rp.style.display='block';}else rp.style.display='none';
+      const rp=document.getElementById('rphoto');
+      if(entry.photo){rp.src=entry.photo;rp.style.display='block';}else rp.style.display='none';
       document.getElementById('rbox').innerHTML=`
         <div class="row"><span>Date</span><span>${entry.date}</span></div>
         <div class="row"><span>Responsable</span><span>${RESP_NOM}</span></div>
@@ -576,6 +642,7 @@ function newForm(){
   document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
   document.querySelectorAll('.field').forEach(f=>{f.classList.remove('error','valid');});
   document.getElementById('mat-hint').classList.remove('show');
+  rmPhoto({preventDefault:()=>{},stopPropagation:()=>{}});
   rmPhoto({preventDefault:()=>{},stopPropagation:()=>{}});
   touched={};
   document.getElementById('date-saisie').value=new Date().toISOString().split('T')[0];
