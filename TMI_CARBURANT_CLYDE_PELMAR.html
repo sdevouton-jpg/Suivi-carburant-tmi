@@ -116,7 +116,7 @@ button[type="submit"].ready{animation:pb 2s infinite}
 <main>
   <div class="cuves-banner">
     <strong>Cuves autorisées — profil Chantier</strong>
-    2 GNR 600 · 3 GNR 600 · 4 GNR 400 · GR STATION CAP · SP STATION CAP
+    2 GNR 600 · 3 GNR 600 · 4 GNR 400 · 7 GNR 400 SXM · GR STATION CAP · SP STATION CAP
   </div>
 
   <div class="sl">Chauffeur</div>
@@ -261,6 +261,7 @@ button[type="submit"].ready{animation:pb 2s infinite}
         <option value="2 GNR 600" data-carb="GNR">2 GNR 600 — Cuve 600L</option>
 <option value="3 GNR 600" data-carb="GNR">3 GNR 600 — Cuve 600L</option>
 <option value="4 GNR 400" data-carb="GNR">4 GNR 400 — Cuve 400L</option>
+<option value="7 GNR 400 SXM" data-carb="GNR">7 GNR 400 SXM — Cuve 400L SXM</option>
 <option value="GR STATION CAP" data-carb="Gasoil">GR STATION CAP — Gasoil CAP</option>
 <option value="SP STATION CAP" data-carb="SP Station">SP STATION CAP — SP CAP</option>
       </select>
@@ -338,23 +339,26 @@ button[type="submit"].ready{animation:pb 2s infinite}
       <label>Chantier d'affectation <span class="req">*</span></label>
       <select id="chantier" onchange="touch('chantier')">
         <option value="">— Sélectionner —</option>
-        <option>AEP SAINT-ANNE impasse VALLIER - Département</option>
-<option>AEP SAINT FRANCOIS RD116 Tranche Delgres - Département</option>
-<option>FORAGE D'EAU - SMGEAG</option>
-<option>MICROPIEUX DE LA RESIDENCE LES GOYAVIERS - GTM</option>
-<option>TS RD6 Vieux Fort Route de Tibois coté droit - Département</option>
-<option>RD13 école Nathalien ETNA à Vieux-Habitants - Département</option>
-<option>Route de Tibois Vieux Fort - Département</option>
-<option>BERGEVIN - Sikoa</option>
-<option>DEPOT - FRAIS GENERAUX</option>
-<option>BELLE PLAINE - Gosier</option>
-<option>LOCATION</option>
-<option>CLASS - Vieux habitant</option>
-<option>ROUTHIER - Département</option>
+        <option>DEPOT - FRAIS GENERAUX</option>
 <option>QUAI12 - GPMG</option>
-<option>AMEDEE FENGAROL - Département</option>
 <option>PETIT CANAL - SMGEAG</option>
+<option>FORAGE D'EAU - SMGEAG</option>
+<option>BERGEVIN - Sikoa</option>
+<option>AMEDEE FENGAROL - Département</option>
+<option>ROUTHIER - Département</option>
 <option>ACC VIEUX FORT - Département</option>
+<option>AEP SAINT-ANNE impasse VALLIER - Département</option>
+<option>AEP SAINT FRANCOIS RD116 Tranche Delgres - Département</option>
+<option>TS RD6 Vieux Fort Route de Tibois coté droit - Département</option>
+<option>RD13 école Nathalien ETNA à Vieux- Habitants - Département</option>
+<option>Route de Tibois Vieux Fort - Département</option>
+<option>MICROPIEUX DE LA RESIDENCE LES GOYAVIERS -GTM</option>
+<option>CLASS - Vieux habitant</option>
+<option>REHAB CRECHE - Vieux habitant</option>
+<option>BELLE PLAINE - Gosier</option>
+<option>CHANTIER ENROBE DIVERS</option>
+<option>CHANTIER DIVERS</option>
+<option>LOCATION</option>
       </select>
       <div class="err">Champ obligatoire</div>
     </div>
@@ -422,7 +426,7 @@ async function uploadToCloudinary(base64Data, fileName) {
 
 const RESP_NOM   = "Clyde Pelmar";
 const RESP_ID    = "CLYDE";
-const CUVE_CARB  = {"2 GNR 600":"GNR","3 GNR 600":"GNR","4 GNR 400":"GNR","GR STATION CAP":"Gasoil","SP STATION CAP":"SP Station"};
+const CUVE_CARB  = {"2 GNR 600":"GNR","3 GNR 600":"GNR","4 GNR 400":"GNR","7 GNR 400 SXM":"GNR","GR STATION CAP":"Gasoil","SP STATION CAP":"SP Station"};
 
 // Référentiel matériels pour affichage hint
 const MAT_NOMS = {};
