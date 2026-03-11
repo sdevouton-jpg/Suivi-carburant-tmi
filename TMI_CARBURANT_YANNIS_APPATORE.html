@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>TMI — Yannis Appatore</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--fuel:#8B5CF6;--glow:rgba(139,92,246,0.25);--bg:#0A0C10;--surface:#12151C;--surface2:#1C2030;--border:rgba(255,255,255,0.07);--text:#F1F5F9;--muted:#64748B;--success:#22C55E;--danger:#EF4444;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{min-height:100dvh;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;overscroll-behavior:none}
+body::before{content:'';position:fixed;top:-200px;left:-200px;width:600px;height:600px;background:radial-gradient(circle,rgba(139,92,246,0.06) 0%,transparent 70%);pointer-events:none}
+header{position:sticky;top:0;z-index:100;background:rgba(10,12,16,0.94);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;gap:12px}
+.logo{width:38px;height:38px;background:var(--fuel);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:17px;color:white;flex-shrink:0;box-shadow:0 0 18px var(--glow)}
+.hdr-txt h1{font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:2px;line-height:1}
+.hdr-txt p{font-size:10px;color:var(--muted);margin-top:2px}
+.hdr-right{margin-left:auto;text-align:right;flex-shrink:0}
+.resp-badge{background:var(--fuel);color:white;border-radius:8px;padding:4px 10px;font-size:11px;font-weight:600;display:block;white-space:nowrap}
+.type-badge{font-size:10px;color:var(--muted);margin-top:2px;display:block}
+.hdr-dt{font-size:10px;color:var(--muted);margin-top:1px;display:block}
+.progress-bar{height:3px;background:var(--surface2);position:sticky;top:62px;z-index:99}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--fuel),#FBBF24);transition:width 0.4s;border-radius:0 2px 2px 0}
+.cuves-banner{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-left:3px solid var(--fuel);border-radius:10px;padding:10px 14px;margin-bottom:14px;font-size:11px;color:var(--muted);line-height:1.6}
+.cuves-banner strong{color:var(--fuel);display:block;font-size:10px;letter-spacing:1px;text-transform:uppercase;margin-bottom:3px}
+main{padding:16px 14px 130px;max-width:480px;margin:0 auto}
+.sl{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--fuel);margin:18px 0 10px;display:flex;align-items:center;gap:8px}
+.sl:first-child{margin-top:0}
+.sl::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--glow),transparent)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px;margin-bottom:10px}
+.field{margin-bottom:14px}.field:last-child{margin-bottom:0}
+label{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+.req{color:var(--fuel);font-size:14px;line-height:1}
+.opt{color:var(--muted);font-size:9px;font-weight:400;letter-spacing:0;text-transform:none;background:var(--surface2);border-radius:4px;padding:1px 5px}
+input,select,textarea{width:100%;background:var(--surface2);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;padding:13px 15px;outline:none;transition:border-color 0.2s,box-shadow 0.2s;appearance:none;-webkit-appearance:none}
+input:focus,select:focus,textarea:focus{border-color:var(--fuel);box-shadow:0 0 0 3px var(--glow)}
+input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(0.4)}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2364748B' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;padding-right:40px}
+select option{background:#1C2030}
+.mat-hint{font-size:11px;color:var(--muted);margin-top:6px;padding:7px 10px;background:var(--surface2);border-radius:8px;display:none;line-height:1.4}
+.mat-hint.show{display:block}
+.mat-hint strong{color:var(--text);display:block;font-size:12px}
+.field.valid input,.field.valid select{border-color:rgba(34,197,94,0.35)}
+.field.error input,.field.error select{border-color:var(--danger)!important;box-shadow:0 0 0 3px rgba(239,68,68,0.15)!important}
+.field.error .chip-wrapper{outline:2px solid var(--danger);outline-offset:3px;border-radius:12px}
+.err{font-size:11px;color:var(--danger);margin-top:5px;display:none}
+.field.error .err{display:block}
+.iu{position:relative}.iu input{padding-right:52px}
+.iu .unit{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:14px;font-weight:600;color:var(--fuel);pointer-events:none}
+.big{font-size:30px!important;font-weight:700!important;text-align:center;padding:16px!important}
+.chip-group{display:flex;flex-wrap:wrap;gap:7px}
+.chip{padding:8px 13px;border-radius:50px;border:1.5px solid var(--border);background:var(--surface2);color:var(--muted);font-size:13px;font-weight:500;cursor:pointer;transition:all 0.15s;user-select:none}
+.chip:active{transform:scale(0.95)}
+.chip.active.gnr{border-color:#F97316;background:rgba(249,115,22,0.12);color:#F97316;font-weight:600}
+.chip.active.go{border-color:#3B82F6;background:rgba(59,130,246,0.12);color:#3B82F6;font-weight:600}
+.chip.active.gr{border-color:#8B5CF6;background:rgba(139,92,246,0.12);color:#8B5CF6;font-weight:600}
+.chip.active.sp{border-color:#22C55E;background:rgba(34,197,94,0.12);color:#22C55E;font-weight:600}
+.photo-zone{border:2px dashed var(--border);border-radius:14px;padding:22px 14px;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--surface2);position:relative;overflow:hidden}
+.photo-zone.has-photo{border-color:rgba(34,197,94,0.5);border-style:solid;padding:0}
+.photo-zone .pi{font-size:34px;display:block;margin-bottom:8px}
+.photo-zone .pl2{font-size:13px;font-weight:500;color:var(--text);display:block}
+.photo-zone .ph{font-size:11px;color:var(--muted);margin-top:4px;display:block;line-height:1.5}
+.photo-zone input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+#photo-preview{width:100%;max-height:230px;object-fit:cover;border-radius:12px;display:none}
+.photo-badge{display:none;position:absolute;top:8px;right:8px;background:var(--success);color:white;border-radius:20px;font-size:11px;font-weight:600;padding:3px 9px}
+.photo-rm{display:none;position:absolute;top:8px;left:8px;background:rgba(239,68,68,0.85);color:white;border:none;border-radius:20px;font-size:11px;font-weight:600;padding:3px 9px;cursor:pointer;z-index:2}
+.photo-zone.has-photo .photo-badge,.photo-zone.has-photo .photo-rm{display:block}
+.photo-zone.has-photo .pi,.photo-zone.has-photo .pl2,.photo-zone.has-photo .ph{display:none}
+.photo-zone.has-photo #photo-preview{display:block}
+.badge-rec{display:inline-flex;background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.3);color:#F59E0B;border-radius:6px;font-size:10px;font-weight:600;padding:2px 7px;margin-left:4px;vertical-align:middle;text-transform:none;letter-spacing:0}
+textarea{resize:none;height:75px;font-size:15px!important;line-height:1.5}
+.btn-submit{position:fixed;bottom:0;left:0;right:0;padding:10px 14px calc(10px + env(safe-area-inset-bottom));background:rgba(10,12,16,0.96);backdrop-filter:blur(20px);border-top:1px solid var(--border);z-index:100}
+.fields-counter{text-align:center;font-size:11px;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:8px}
+.dots{display:flex;gap:4px}
+.dot-f{width:7px;height:7px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);transition:all 0.3s}
+.dot-f.on{background:var(--fuel);border-color:var(--fuel)}
+.dot-f.bad{background:var(--danger)!important;border-color:var(--danger)!important}
+button[type="submit"]{width:100%;background:var(--fuel);border:none;border-radius:13px;color:white;font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:3px;padding:16px;cursor:pointer;transition:all 0.2s;box-shadow:0 4px 20px var(--glow);display:flex;align-items:center;justify-content:center}
+button[type="submit"]:active{transform:scale(0.98)}
+button[type="submit"]:disabled{background:var(--surface2);color:var(--muted);box-shadow:none;cursor:not-allowed;transform:none}
+button[type="submit"].ready{animation:pb 2s infinite}
+@keyframes pb{0%,100%{box-shadow:0 4px 20px var(--glow)}50%{box-shadow:0 4px 34px rgba(139,92,246,0.55)}}
+.overlay{position:fixed;inset:0;z-index:999;background:rgba(10,12,16,0.97);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:26px;opacity:0;pointer-events:none;transition:opacity 0.3s;overflow-y:auto}
+.overlay.show{opacity:1;pointer-events:all}
+.ov-icon{width:70px;height:70px;background:rgba(34,197,94,0.12);border:2px solid var(--success);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px}
+.overlay h2{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:3px;text-align:center}
+.overlay p{color:var(--muted);text-align:center;font-size:13px;line-height:1.6}
+.rbox{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:13px 16px;width:100%;font-size:13px;line-height:2.1}
+.rbox .row{display:flex;justify-content:space-between;gap:10px}
+.rbox .row span:first-child{color:var(--muted)}.rbox .row span:last-child{font-weight:600;text-align:right;max-width:60%;font-size:12px}
+.rphoto{width:100%;max-height:150px;object-fit:cover;border-radius:10px;display:none}
+.btn3{width:100%;padding:15px;border-radius:13px;border:none;cursor:pointer;font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:2px;background:var(--fuel);color:white;box-shadow:0 4px 18px var(--glow)}
+.sending-overlay{position:fixed;inset:0;z-index:998;background:rgba(10,12,16,0.85);display:none;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+.sending-overlay.show{display:flex}
+.spinner{width:48px;height:48px;border:3px solid var(--surface2);border-top:3px solid var(--fuel);border-radius:50%;animation:spin 0.8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.sending-txt{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">TMI</div>
+  <div class="hdr-txt">
+    <h1>Carburant</h1>
+    <p>Saisie — Chantier</p>
+  </div>
+  <div class="hdr-right">
+    <span class="resp-badge">Yannis Appatore</span>
+    <span class="type-badge">Chantier</span>
+    <span class="hdr-dt" id="hdr-dt">—</span>
+  </div>
+</header>
+<div class="progress-bar"><div class="progress-fill" id="progress" style="width:0%"></div></div>
+
+<main>
+  <div class="cuves-banner">
+    <strong>Cuves autorisées — profil Chantier</strong>
+    2 GNR 600 · 3 GNR 600 · 4 GNR 400 · GR STATION CAP · SP STATION CAP
+  </div>
+
+  <div class="sl">Chauffeur</div>
+  <div class="card">
+    <div class="field" id="field-utilisateur">
+      <label>Chauffeur servi <span class="req">*</span></label>
+      <select id="utilisateur" onchange="touch('utilisateur')">
+<option value="">— Sélectionner —</option>
+<option value="Abdallah Kouidhi">Abdallah Kouidhi</option>
+<option value="Alexandre Mopsus">Alexandre Mopsus</option>
+<option value="Arnaud Disson">Arnaud Disson</option>
+<option value="Clyde Pelmar">Clyde Pelmar</option>
+<option value="Cyrille Patrick">Cyrille Patrick</option>
+<option value="Didier Léogane">Didier Léogane</option>
+<option value="Francis Cophy">Francis Cophy</option>
+<option value="Govindin Rosan">Govindin Rosan</option>
+<option value="Johane DEVOUTON">Johane DEVOUTON</option>
+<option value="Landry Lacides">Landry Lacides</option>
+<option value="Leslie Bart">Leslie Bart</option>
+<option value="Lionel Dollin">Lionel Dollin</option>
+<option value="Loic Marcel">Loic Marcel</option>
+<option value="Monica Morvany">Monica Morvany</option>
+<option value="Ronald Toulon">Ronald Toulon</option>
+<option value="Samuel DEVOUTON">Samuel DEVOUTON</option>
+<option value="Severin Berges">Severin Berges</option>
+<option value="Yannis Appatore">Yannis Appatore</option>
+<option value="Tanguy Henri">Tanguy Henri</option>
+<option value="Thierry Pallud">Thierry Pallud</option>
+<option value="Yannis Appatore">Yannis Appatore</option>
+<option value="Maximilien">Maximilien</option>
+<option value="Foule">Foule</option>
+<option value="Gérard Francillette">Gérard Francillette</option>
+<option value="Gwénaelle Vairac">Gwénaelle Vairac</option>
+</select>
+      <div class="err">Champ obligatoire</div>
+    </div>
+  </div>
+
+  <div class="sl">Matériel</div>
+  <div class="card">
+    <div class="field" id="field-materiel">
+      <label>N° IXBAT / Identifiant <span class="req">*</span></label>
+      <select id="materiel" onchange="onMat()">
+        <option value="">— Sélectionner —</option>
+        <option value="LOCATION">LOCATION — Location - location matériel</option>
+<option value="MULTI">MULTI — MULTI-ENGINS</option>
+<option value="POMPE A BOUE">POMPE A BOUE — POMPE A BOUE</option>
+<option value="BIDON">BIDON — BIDON</option>
+<option value="CUVE">CUVE — CUVE</option>
+<option value="HC-033-QP">HC-033-QP — Pick-up HC-033-QP</option>
+<option value="HD-479-SQ">HD-479-SQ — Pick-up HD-479-SQ</option>
+<option value="GL-071-GZ">GL-071-GZ — FORD RANGER GL-071-GZ</option>
+<option value="GL-108-GZ">GL-108-GZ — FORD RANGER GL-108-GZ</option>
+<option value="HC-533-SQ">HC-533-SQ — HUYNDAI KONA HC-533-SQ</option>
+<option value="HC-545-SQ">HC-545-SQ — HUYNDAI KONA HC-545-SQ</option>
+<option value="HC-391-NM">HC-391-NM — DACIA DUSTER HC-391-NM</option>
+<option value="GT-031-HA">GT-031-HA — VP location Cyrille Patrick</option>
+<option value="000001">000001 — PELLE 6T XE60 DA 1</option>
+<option value="000002">000002 — PELLE 6T XE60 DA 2</option>
+<option value="000003">000003 — PELLE 6T XE60 DA 3</option>
+<option value="000004">000004 — PELLE 6T XE60 DA 4</option>
+<option value="000005">000005 — PELLE 2.8T XE27E 1</option>
+<option value="000006">000006 — PELLE 2.8T XE27E 2</option>
+<option value="000007">000007 — PELLE 2.8T XE27E 3</option>
+<option value="000008">000008 — PELLE 2.8T XE27E 4</option>
+<option value="000009">000009 — PELLE2.8T XE27E 5</option>
+<option value="000010">000010 — PELLE 2.8T XE27E 6</option>
+<option value="000011">000011 — PELLE 2.8T XE27E 7</option>
+<option value="000012">000012 — PELLE 16T A ROUE 1</option>
+<option value="000013">000013 — PELLE 16T A ROUE 2</option>
+<option value="000014">000014 — CHARGEUSE PELLETEUSE XC7-SR10 XCMG</option>
+<option value="000015">000015 — MINI BOUILLE 7.13 KG  2000L TICAB SUR CAMIONNETTE</option>
+<option value="000016">000016 — FINISSEUR RP705 17.5T</option>
+<option value="000017">000017 — MINI FINISSEUR RP355 8T</option>
+<option value="000018">000018 — RABOTEUSE XM1505F 20.65T</option>
+<option value="000019">000019 — COMPACTEUR HAMM HD 128 13T</option>
+<option value="000020">000020 — BI-CYLINDRE XCMG N°1 XD120</option>
+<option value="000021">000021 — BI-CYLINDRE XCMG N°2 XD120</option>
+<option value="000022">000022 — AJ-796-BG CAMION AMPLIROLL RENAULT</option>
+<option value="000023">000023 — HC-746-HB CAMION BENNE 3.5T MAN TGE</option>
+<option value="000024">000024 — HC-375-HB CAMION GRUE BENNE 3.5T MAN TGE</option>
+<option value="000025">000025 — HC-061-HB DOUBLE CABINE BENNE MAN TGE</option>
+<option value="000026">000026 — CHARIOT TELESCOPIQUE MT1440 MANITOU 4T</option>
+<option value="000027">000027 — POMPE BETON XCMG XS5008D 4.7T</option>
+<option value="000028">000028 — COMPRESSEUR 17 KL KAESER</option>
+<option value="000029">000029 — COMPRESSEUR  24m3 ATLAS COPCO  XHAS 408-30</option>
+<option value="000030">000030 — FOREUSE MC8 HT COMACCHIO 8.6T</option>
+<option value="000031">000031 — FOREUSE XCMG XLS4 200B 9T</option>
+<option value="000032">000032 — GLISSIERRE FORAGE 1 MR2-PN MARINI</option>
+<option value="000033">000033 — GLISSIERRE FORAGE 2 MR2-PN MARINI</option>
+<option value="000034">000034 — MALAXEUR 290KG AIR FOURMIFOR 150L-BSP15 P4 2016</option>
+<option value="000035">000035 — MINI AIR GROUT</option>
+<option value="000036">000036 — MALAXEUR PRIOMIX</option>
+<option value="000037">000037 — MIXEUR-AGIGATEUR-INJECTEURDE/OL80-T300-AG500 1.2T</option>
+<option value="000038">000038 — GUNITEUSE MG305 ARNABAT Béton projeté</option>
+<option value="000039">000039 — MONTABERT P21 -N°1</option>
+<option value="000040">000040 — MONTABERT P21 -N°2</option>
+<option value="000060">000060 — PELLE 2.8T XE27E 1 XUGA0275TSKA02176</option>
+<option value="000061">000061 — COMPACTEUR 800KG XMR083 N°1 XUG008I7LPJE04067</option>
+<option value="000062">000062 — COMPACTEUR 800KG XMR083 N°2 XUG008l7HPJE04068</option>
+<option value="000063">000063 — COMPACTEUR 800KG XMR083 N°3 XUG008l7EPJE04069</option>
+<option value="000064">000064 — Pilonneuse BS68 - 1</option>
+<option value="000065">000065 — Pilonneuse BS68 - 2</option>
+<option value="000066">000066 — Pilonneuse BS68 - 3</option>
+<option value="000067">000067 — Pilonneuse BS68 - 4</option>
+<option value="000068">000068 — PLAQUE VIBRANTE 80KG LFV80 HUSQUAVARNA</option>
+<option value="000069">000069 — PLAQUE VIBRANTE 95KG LF 100 HUSQUAVARNA</option>
+<option value="000070">000070 — PLAQUE VIBRANTE 85KG PGX 12/36 ALTRAD</option>
+<option value="000071">000071 — SCIE A SOL HUSQUAVARNA FS400LV</option>
+<option value="000072">000072 — PLAQUE VIBRANTE 385KG AMMANN</option>
+<option value="000073">000073 — PLAQUE VIBRANTE 397KG AMMANN</option>
+<option value="000074">000074 — HE-277-YT CAMION IVECO BENNE</option>
+<option value="000075">000075 — HE-674-ZN CAMION BENNE 3.5T MAN TGE</option>
+<option value="000076">000076 — GROUPE ELECTROGENE CUMMINS 55KVA C55D5EQ</option>
+<option value="000077">000077 — GROUPE ELECTROGENE CUMMINS 55KVA C55D5EQ</option>
+<option value="000078">000078 — Compresseur 5m3 Atlas Copco XAS88 KD G4 SQ</option>
+<option value="000079">000079 — Compresseur 17m3 Air X-Air + 600-17 CUD G4 SQ</option>
+<option value="000080">000080 — CHARIOT TELESCOPIQUE 11.2T XCMG XT4014KH</option>
+<option value="000082">000082 — PLAQUE VIBRANTE 385KG AMMANN</option>
+<option value="000083">000083 — PIEDS DE MOUTON 1450KG AMMANN</option>
+<option value="000084">000084 — PELLE 15T XE155UCR XCMG</option>
+<option value="000085">000085 — RABOTEUSE 1m XM1005F 171 Kg</option>
+<option value="000086">000086 — CHARIOT ELEVATEUR  4T - HELI CPCD40 G3 V35-92C41</option>
+<option value="000087">000087 — BI-CYLINDRE XCMG N°3 XD120S IV</option>
+<option value="000088">000088 — HJ-445-AT FOURGON MAN TGE TOLLE ATTELIER</option>
+<option value="000089">000089 — HJ-429-AS CAMION BENNE 3.5T MAN TGE</option>
+      </select>
+      <div class="mat-hint" id="mat-hint">
+        <strong id="mat-nom">—</strong>
+        <span id="mat-id-display">—</span>
+      </div>
+      <div class="err">Champ obligatoire</div>
+    </div>
+  </div>
+
+  <div class="sl">Cuve & Carburant</div>
+  <div class="card">
+    <div class="field" id="field-cuve">
+      <label>Cuve <span class="req">*</span></label>
+      <select id="cuve" onchange="onCuve()">
+        <option value="">— Sélectionner —</option>
+        <option value="2 GNR 600" data-carb="GNR">2 GNR 600 — Cuve 600L</option>
+<option value="3 GNR 600" data-carb="GNR">3 GNR 600 — Cuve 600L</option>
+<option value="4 GNR 400" data-carb="GNR">4 GNR 400 — Cuve 400L</option>
+<option value="GR STATION CAP" data-carb="Gasoil">GR STATION CAP — Gasoil CAP</option>
+<option value="SP STATION CAP" data-carb="SP Station">SP STATION CAP — SP CAP</option>
+      </select>
+      <div class="err">Champ obligatoire</div>
+    </div>
+    <div class="field" id="field-carburant">
+      <label>Type de carburant <span class="req">*</span></label>
+      <div class="chip-wrapper">
+        <div class="chip-group">
+          <div class="chip gnr" onclick="pickChip(this,'GNR')">GNR</div>
+          <div class="chip go"  onclick="pickChip(this,'Gasoil')">Gasoil</div>
+          <div class="chip gr"  onclick="pickChip(this,'GR Station')">GR Station</div>
+          <div class="chip sp"  onclick="pickChip(this,'SP Station')">SP Station</div>
+        </div>
+      </div>
+      <input type="hidden" id="carburant">
+      <div class="err">Selectionnez un type de carburant</div>
+    </div>
+  </div>
+
+  <div class="sl">Volume distribué</div>
+  <div class="card">
+    <div class="field" id="field-litres">
+      <label>Litres distribués <span class="req">*</span></label>
+      <div class="iu">
+        <input type="number" id="litres" class="big" placeholder="0" min="0.1" step="0.1" inputmode="decimal" oninput="touch('litres')" onchange="touch('litres')">
+        <span class="unit">L</span>
+      </div>
+      <div class="err">Saisissez un volume superieur a 0</div>
+    </div>
+    <div class="field" id="field-compteur">
+      <label>Compteur km / Heures <span class="req">*</span></label>
+      <div class="iu">
+        <input type="number" id="compteur" placeholder="—" min="0" inputmode="numeric" oninput="touch('compteur')" onchange="touch('compteur')">
+        <span class="unit">km</span>
+      </div>
+      <div class="err">Champ obligatoire</div>
+    </div>
+  </div>
+
+
+    <div class="sl">Photo compteur km/h <span class="badge-rec">Recommandee</span></div>
+  <div class="card">
+    <div class="field">
+      <label>Photo Compteur <span class="opt">optionnel</span></label>
+      <div class="photo-zone" id="photo-zone">
+        <input type="file" id="photo-input" accept="image/*" capture="environment" onchange="onPhoto(this)">
+        <span class="pi">📷</span>
+        <span class="pl2">Prendre une photo</span>
+        <span class="ph">Compteur km ou releve de jauge</span>
+        <img id="photo-preview" alt="Photo">
+        <span class="photo-badge">Photo OK</span>
+        <button class="photo-rm" onclick="rmPhoto(event)">Supprimer</button>
+      </div>
+    </div>
+  </div>
+  <div class="sl">Photo jauge carburant <span class="badge-rec">Recommandee</span></div>
+  <div class="card">
+    <div class="field">
+      <div class="photo-zone" id="photo-zone2">
+        <input type="file" id="photo-input2" accept="image/*" capture="environment" onchange="onPhoto2(this)">
+        <span class="pi">📷</span>
+        <span class="pl2">Prendre une photo de la jauge</span>
+        <span class="ph">Niveau visible avant/apres</span>
+        <img id="photo-preview2" alt="Photo jauge" style="width:100%;max-height:230px;object-fit:cover;border-radius:12px;display:none">
+        <span class="photo-badge">Photo OK</span>
+        <button class="photo-rm" onclick="rmPhoto2(event)">Supprimer</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sl">Chantier</div>
+  <div class="card">
+    <div class="field" id="field-chantier">
+      <label>Chantier d'affectation <span class="req">*</span></label>
+      <select id="chantier" onchange="touch('chantier')">
+        <option value="">— Sélectionner —</option>
+        <option>AEP SAINT-ANNE impasse VALLIER - Département</option>
+<option>AEP SAINT FRANCOIS RD116 Tranche Delgres - Département</option>
+<option>FORAGE D'EAU - SMGEAG</option>
+<option>MICROPIEUX DE LA RESIDENCE LES GOYAVIERS - GTM</option>
+<option>TS RD6 Vieux Fort Route de Tibois coté droit - Département</option>
+<option>RD13 école Nathalien ETNA à Vieux-Habitants - Département</option>
+<option>Route de Tibois Vieux Fort - Département</option>
+<option>BERGEVIN - Sikoa</option>
+<option>DEPOT - FRAIS GENERAUX</option>
+<option>BELLE PLAINE - Gosier</option>
+<option>LOCATION</option>
+<option>CLASS - Vieux habitant</option>
+<option>ROUTHIER - Département</option>
+<option>QUAI12 - GPMG</option>
+<option>AMEDEE FENGAROL - Département</option>
+<option>PETIT CANAL - SMGEAG</option>
+<option>ACC VIEUX FORT - Département</option>
+      </select>
+      <div class="err">Champ obligatoire</div>
+    </div>
+  </div>
+
+  <div class="sl">Détails</div>
+  <div class="card">
+    <div class="field">
+      <label>Date <span class="req">*</span></label>
+      <input type="date" id="date-saisie">
+    </div>
+    <div class="field">
+      <label>Observation <span class="opt">optionnel</span></label>
+      <textarea id="obs" placeholder="Anomalie, panne, remarque..."></textarea>
+    </div>
+  </div>
+</main>
+
+<div class="btn-submit">
+  <div class="fields-counter">
+    <div class="dots" id="dots-row"></div>
+    <span id="fields-txt">0 / 7 champs remplis</span>
+  </div>
+  <button type="submit" id="btn-val" onclick="submitForm()" disabled>VALIDER LA SAISIE</button>
+</div>
+
+<div class="sending-overlay" id="sending">
+  <div class="spinner"></div>
+  <div class="sending-txt">ENVOI EN COURS...</div>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="ov-icon">✓</div>
+  <h2>Saisie envoyée !</h2>
+  <p>Ligne ajoutée dans Google Sheets.<br>Visible immédiatement par votre responsable.</p>
+  <img class="rphoto" id="rphoto" alt="">
+  <div class="rbox" id="rbox"></div>
+  <button class="btn3" onclick="newForm()">NOUVELLE SAISIE</button>
+</div>
+
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbynrX_TWIYo045jZFJnDV-tPSG7DQ2R3gJRoHequhMSybfDkj_oINSmBOUM-tRBP3LC-w/exec";
+const CLOUDINARY_CLOUD = "diykly4wp";
+const CLOUDINARY_PRESET = "tmi_carburant";
+
+async function uploadToCloudinary(base64Data, fileName) {
+  if (!base64Data || base64Data === "") return "";
+  try {
+    const blob = await fetch(base64Data).then(r => r.blob());
+    const formData = new FormData();
+    formData.append("file", blob, fileName);
+    formData.append("upload_preset", CLOUDINARY_PRESET);
+    formData.append("folder", "tmi_carburant");
+    const res = await fetch("https://api.cloudinary.com/v1_1/" + CLOUDINARY_CLOUD + "/image/upload", {
+      method: "POST",
+      body: formData
+    });
+    const data = await res.json();
+    return data.secure_url || "";
+  } catch(err) {
+    console.error("Cloudinary error:", err);
+    return "";
+  }
+}
+
+const RESP_NOM   = "Yannis Appatore";
+const RESP_ID    = "YANNIS";
+const CUVE_CARB  = {"2 GNR 600":"GNR","3 GNR 600":"GNR","4 GNR 400":"GNR","GR STATION CAP":"Gasoil","SP STATION CAP":"SP Station"};
+
+// Référentiel matériels pour affichage hint
+const MAT_NOMS = {};
+document.querySelectorAll('#materiel option').forEach(o => {
+  if(o.value) {
+    const parts = o.textContent.split(' — ');
+    MAT_NOMS[o.value] = parts.length > 1 ? parts.slice(1).join(' — ') : o.textContent;
+  }
+});
+
+const REQ=[
+  {f:'field-utilisateur',id:'utilisateur',t:'select'},
+  {f:'field-materiel',   id:'materiel',   t:'select'},
+  {f:'field-cuve',       id:'cuve',       t:'select'},
+  {f:'field-carburant',  id:'carburant',  t:'hidden'},
+  {f:'field-litres',     id:'litres',     t:'number'},
+  {f:'field-compteur',   id:'compteur',   t:'number'},
+  {f:'field-chantier',   id:'chantier',   t:'select'},
+];
+
+let photoB64=null, photoB642=null, touched={};
+
+(function(){
+  updateClock(); setInterval(updateClock,1000);
+  document.getElementById('date-saisie').value=new Date().toISOString().split('T')[0];
+  document.getElementById('dots-row').innerHTML=REQ.map((_,i)=>`<div class="dot-f" id="dot-${i}"></div>`).join('');
+  updateProgress();
+})();
+
+function updateClock(){
+  const n=new Date();
+  const D=['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+  const M=['Jan','Fev','Mar','Avr','Mai','Jun','Jul','Aou','Sep','Oct','Nov','Dec'];
+  document.getElementById('hdr-dt').textContent=`${D[n.getDay()]} ${n.getDate()} ${M[n.getMonth()]} ${n.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}`;
+}
+function isOk(r){
+  const el=document.getElementById(r.id),v=el?el.value:'';
+  return v&&(r.t!=='number'||parseFloat(v)>0);
+}
+function updateProgress(){
+  let filled=0;
+  REQ.forEach((r,i)=>{
+    const ok=isOk(r);
+    const d=document.getElementById(`dot-${i}`);
+    if(d){d.classList.toggle('on',!!ok);d.classList.toggle('bad',!ok&&!!touched[r.id]);}
+    if(ok) filled++;
+  });
+  document.getElementById('progress').style.width=Math.round(filled/REQ.length*100)+'%';
+  document.getElementById('fields-txt').textContent=`${filled} / ${REQ.length} champs remplis`;
+  const btn=document.getElementById('btn-val');
+  btn.disabled=filled<REQ.length;
+  btn.classList.toggle('ready',filled===REQ.length);
+}
+function touch(id){
+  touched[id]=true;
+  const r=REQ.find(x=>x.id===id);
+  if(r){const ok=isOk(r);const f=document.getElementById(r.f);if(f){f.classList.toggle('error',!ok);f.classList.toggle('valid',!!ok);}}
+  updateProgress();
+}
+function onMat(){
+  touch('materiel');
+  const v=document.getElementById('materiel').value;
+  const hint=document.getElementById('mat-hint');
+  if(v&&MAT_NOMS[v]){
+    document.getElementById('mat-nom').textContent=MAT_NOMS[v];
+    document.getElementById('mat-id-display').textContent='N° IXBAT : '+v;
+    hint.classList.add('show');
+  }else{
+    hint.classList.remove('show');
+  }
+  loadLastCompteur(v);
+}
+function onCuve(){
+  touch('cuve');
+  const v=document.getElementById('cuve').value;
+  if(v&&CUVE_CARB[v]) setCarb(CUVE_CARB[v]);
+}
+function pickChip(el,val){
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('carburant').value=val;
+  touched['carburant']=true;touch('carburant');
+}
+function setCarb(val){
+  document.querySelectorAll('.chip').forEach(c=>{
+    const m=c.getAttribute('onclick').match(/'([^']+)'\)/);
+    c.classList.toggle('active',m&&m[1]===val);
+  });
+  document.getElementById('carburant').value=val;
+  touched['carburant']=true;touch('carburant');
+}
+
+function loadLastCompteur(materielId) {
+  if (!materielId) return;
+  fetch(SCRIPT_URL + '?materiel=' + encodeURIComponent(materielId))
+    .then(r => r.json())
+    .then(data => {
+      if (data.status === 'success' && data.compteur !== '') {
+        const field = document.getElementById('compteur');
+        if (field && !field.value) {
+          field.value = data.compteur;
+          field.style.borderColor = 'var(--success)';
+          field.title = 'Dernière valeur enregistrée';
+        }
+      }
+    })
+    .catch(() => {});
+}
+function onPhoto(input){
+  if(!input.files||!input.files[0]) return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    photoB64=e.target.result;
+    document.getElementById('photo-preview').src=photoB64;
+    document.getElementById('photo-zone').classList.add('has-photo');
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+function onPhoto2(inp){
+  if(!inp.files||!inp.files[0])return;
+  var r=new FileReader();
+  r.onload=function(ev){
+    document.getElementById('photo-preview2').src=ev.target.result;
+    document.getElementById('photo-preview2').style.display='block';
+    document.getElementById('photo-zone2').classList.add('has-photo');
+    photoB642=ev.target.result;
+  };
+  r.readAsDataURL(inp.files[0]);
+}
+function rmPhoto2(e){
+  if(e){e.preventDefault();e.stopPropagation();}
+  document.getElementById('photo-input2').value='';
+  document.getElementById('photo-preview2').style.display='none';
+  document.getElementById('photo-zone2').classList.remove('has-photo');
+  photoB642='';
+}
+function rmPhoto(e){
+  e.preventDefault();e.stopPropagation();
+  photoB64=null;
+  document.getElementById('photo-preview').src='';
+  document.getElementById('photo-input').value='';
+  document.getElementById('photo-zone').classList.remove('has-photo');
+}
+
+
+async function submitForm(){
+  let allOk=true;
+  REQ.forEach(r=>{
+    touched[r.id]=true;const ok=isOk(r);
+    const f=document.getElementById(r.f);
+    if(f){f.classList.toggle('error',!ok);f.classList.toggle('valid',!!ok);}
+    if(!ok) allOk=false;
+  });
+  updateProgress();
+  if(!allOk){const first=document.querySelector('.field.error');if(first)first.scrollIntoView({behavior:'smooth',block:'center'});return;}
+  const dv=document.getElementById('date-saisie').value;
+  const dp=dv.split('-');
+  const matVal=document.getElementById('materiel').value;
+  const entry={
+    date:`${dp[2]}/${dp[1]}/${dp[0]}`,
+    utilisateur:document.getElementById('utilisateur').value,
+    resp:RESP_NOM,responsable_id:RESP_ID,
+    materiel: ''+matVal,
+    materiel_nom:MAT_NOMS[matVal]||'',
+    cuve:document.getElementById('cuve').value,
+    carburant:document.getElementById('carburant').value,
+    litres:parseFloat(document.getElementById('litres').value),
+    compteur:document.getElementById('compteur').value||'',
+    chantier:document.getElementById('chantier').value,
+    obs:document.getElementById('obs').value||'',
+    photo:photoB64||"",
+    photo2:photoB642||"",
+  };
+  document.getElementById('sending').classList.add('show');
+  const baseName = entry.date.replace(/\//g,'-') + '_' + entry.responsable_id + '_' + entry.materiel;
+  entry.photo = await uploadToCloudinary(photoB64, baseName + '_COMPTEUR.jpg');
+  entry.photo2 = await uploadToCloudinary(photoB642, baseName + '_JAUGE.jpg');
+  fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify(entry)})
+  .then(r=>r.json())
+  .then(data=>{
+    document.getElementById('sending').classList.remove('show');
+    if(data.status==='success'){
+      const rp=document.getElementById('rphoto');
+      if(entry.photo){rp.src=entry.photo;rp.style.display='block';}else rp.style.display='none';
+      document.getElementById('rbox').innerHTML=`
+        <div class="row"><span>Date</span><span>${entry.date}</span></div>
+        <div class="row"><span>Responsable</span><span>${RESP_NOM}</span></div>
+        <div class="row"><span>Chauffeur</span><span>${entry.utilisateur}</span></div>
+        <div class="row"><span>Matériel</span><span>${entry.materiel} — ${entry.materiel_nom}</span></div>
+        <div class="row"><span>Cuve</span><span>${entry.cuve}</span></div>
+        <div class="row"><span>Carburant</span><span>${entry.carburant}</span></div>
+        <div class="row"><span>Volume</span><span style="color:var(--fuel);font-size:18px">${entry.litres.toFixed(1)} L</span></div>
+        <div class="row"><span>Chantier</span><span>${entry.chantier}</span></div>
+      `;
+      document.getElementById('overlay').classList.add('show');
+    }else{alert('Erreur : '+data.message);}
+  })
+  .catch(()=>{
+    document.getElementById('sending').classList.remove('show');
+    alert('Erreur reseau. Verifiez votre connexion et reessayez.');
+  });
+}
+function newForm(){
+  document.getElementById('overlay').classList.remove('show');
+  ['utilisateur','materiel','cuve','chantier','obs','litres','compteur'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('carburant').value='';
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  document.querySelectorAll('.field').forEach(f=>{f.classList.remove('error','valid');});
+  document.getElementById('mat-hint').classList.remove('show');
+  rmPhoto({preventDefault:()=>{},stopPropagation:()=>{}});
+  touched={};
+  document.getElementById('date-saisie').value=new Date().toISOString().split('T')[0];
+  updateProgress();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
