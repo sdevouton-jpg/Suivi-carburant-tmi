@@ -300,13 +300,7 @@ button[type="submit"].ready{animation:pb 2s infinite}
       <label>Cuve <span class="req">*</span></label>
       <select id="cuve" onchange="onCuve()">
         <option value="">— Sélectionner —</option>
-        <option value="2 GNR 600" data-carb="GNR">2 GNR 600 — Cuve 600L</option>
-<option value="3 GNR 600" data-carb="GNR">3 GNR 600 — Cuve 600L</option>
-<option value="4 GNR 400" data-carb="GNR">4 GNR 400 — Cuve 400L</option>
-<option value="7 GNR 400 SXM" data-carb="GNR">7 GNR 400 SXM — Cuve 400L SXM</option>
-<option value="8 GNR 200" data-carb="GNR">8 GNR 200 — Cuve 200L</option>
-<option value="GR STATION CAP" data-carb="Gasoil">GR STATION CAP — Gasoil CAP</option>
-<option value="SP STATION CAP" data-carb="SP Station">SP STATION CAP — SP CAP</option>
+        <option value="2 GNR 600" data-carb="GNR" selected>2 GNR 600 — Cuve 600L</option>
       </select>
       <div class="err">Champ obligatoire</div>
     </div>
@@ -441,7 +435,7 @@ async function uploadToCloudinary(base64Data, fileName) {
 
 const RESP_NOM   = "Clyde Pelmar";
 const RESP_ID    = "CLYDE";
-const CUVE_CARB  = {"2 GNR 600":"GNR","3 GNR 600":"GNR","4 GNR 400":"GNR","7 GNR 400 SXM":"GNR","8 GNR 200":"GNR","GR STATION CAP":"Gasoil","SP STATION CAP":"SP Station"};
+const CUVE_CARB = {"2 GNR 600":"GNR"};
 
 // Référentiel matériels pour affichage hint
 const MAT_NOMS = {};
@@ -690,6 +684,12 @@ function newForm(){
   updateProgress();
   window.scrollTo({top:0,behavior:'smooth'});
 }
+
+// Init au chargement : activer le chip carburant de la cuve pré-sélectionnée
+document.addEventListener('DOMContentLoaded', function(){
+  const cuveEl = document.getElementById('cuve');
+  if(cuveEl && cuveEl.value && typeof onCuve === 'function'){ onCuve(); }
+});
 </script>
 </body>
 </html>

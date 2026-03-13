@@ -450,27 +450,21 @@ button[type="submit"].ready{animation:pb 2s infinite}
         </select>
         <div class="err">Champ obligatoire</div>
       </div>
-      <div class="field" id="ft-field-cuve-dst">
-        <label>Cuve destination <span class="req">*</span></label>
-        <select id="ft-cuve-dst" onchange="onFtCuveDst()">
-        <option value="">— Sélectionner —</option>
-        <option value="0 GNR 5000">0 GNR 5000 — Cuve principale 5000L</option>
-        <option value="1 GNR 2500">1 GNR 2500 — Cuve 2500L</option>
-        <option value="5 GR 2500">5 GR 2500 — Gasoil routier 2500L</option>
-        <option value="6 GR 2500">6 GR 2500 — Gasoil routier 2500L</option>
-        <option value="2 GNR 600">2 GNR 600 — Cuve 600L</option>
-        <option value="3 GNR 600">3 GNR 600 — Cuve 600L</option>
-        <option value="4 GNR 400">4 GNR 400 — Cuve 400L</option>
-        <option value="7 GNR 400 SXM">7 GNR 400 SXM — Cuve 400L SXM</option>
-        <option value="8 GNR 200">8 GNR 200 — Cuve 200L</option>
+            <div class="field" id="ft-field-cuve-dst">
+        <label>Donner à <span class="req">*</span></label>
+        <select id="ft-personne-dst" onchange="onPersonneDst()">
+        <option value="">— Sélectionner une personne —</option>
+        <option value="Clyde Pelmar">Clyde Pelmar</option>
+        <option value="Stéphane Moutoucarpin">Stéphane Moutoucarpin</option>
+        <option value="Yannis Appatore">Yannis Appatore</option>
+        <option value="Tanguy Henri">Tanguy Henri</option>
         </select>
-      <div id="confie-wrap" style="display:none;margin-top:10px">
-        <label class="field-label">Confié à</label>
-        <input type="text" id="ft-confie" placeholder="Opérateur recevant le carburant"
-               style="width:100%;padding:10px 12px;background:#1a1a2e;border:1px solid var(--border);
-                      border-radius:8px;color:#fff;font-size:14px;"
-               oninput="ftUpdateProgress()">
-      </div>
+        <div id="dst-cuve-wrap" style="display:none;margin-top:10px">
+          <label style="font-size:12px;color:var(--muted);margin-bottom:4px;display:block">Cuve associée</label>
+          <select id="ft-cuve-dst" onchange="ftTouch('ft-cuve-dst')" style="background:rgba(168,85,247,0.08);border-color:#a855f7;">
+            <option value="">—</option>
+          </select>
+        </div>
         <div class="err">Champ obligatoire</div>
       </div>
     </div>
@@ -517,10 +511,12 @@ button[type="submit"].ready{animation:pb 2s infinite}
       </div>
     </div>
 
-    <div class="btn-submit">
-      <button id="ft-btn-val" class="btn-val" onclick="submitTransfert()" disabled>
-        <span>VALIDER LE TRANSFERT</span>
-      </button>
+        <div class="btn-submit">
+      <div class="fields-counter">
+        <div class="dots" id="ft-dots-row"></div>
+        <span id="ft-fields-txt">0 / 3 champs remplis</span>
+      </div>
+      <button type="submit" id="ft-btn-val" onclick="submitTransfert()" disabled>VALIDER LE TRANSFERT</button>
     </div>
   </div>
   <!-- ═══ FIN FORMULAIRE TRANSFERT ═══ -->
@@ -854,6 +850,16 @@ function ftUpdateProgress(){
   const pct = Math.round(filled/FT_REQ.length*100);
   document.getElementById('ft-progress').style.width=pct+'%';
   document.getElementById('ft-fields-txt').textContent=filled+' / '+FT_REQ.length+' champs remplis';
+  // Dots transfert
+  const dotsRow = document.getElementById('ft-dots-row');
+  if(dotsRow){
+    dotsRow.innerHTML='';
+    FT_REQ.forEach(id=>{
+      const d=document.createElement('div');
+      d.className='dot-f'+(document.getElementById(id)&&document.getElementById(id).value?' on':'');
+      dotsRow.appendChild(d);
+    });
+  }
   const btn=document.getElementById('ft-btn-val');
   btn.disabled=filled<FT_REQ.length;
   btn.classList.toggle('ready',filled===FT_REQ.length);
@@ -934,6 +940,7 @@ async function submitTransfert(){
           <div class="row"><span>Opérateur</span><span>${entry.utilisateur}</span></div>
           <div class="row"><span>Type</span><span>⇄ TRANSFERT</span></div>
           <div class="row"><span>Cuve source</span><span>${src} <span style="color:#ef4444">−${entry.litres} L</span></span></div>
+          <div class="row"><span>Bénéficiaire</span><span>${document.getElementById('ft-personne-dst').value}</span></div>
           <div class="row"><span>Cuve destination</span><span>${dst} <span style="color:#22c55e">+${entry.litres} L</span></span></div>
           ${entry.obs?`<div class="row"><span>Obs.</span><span>${entry.obs}</span>`:''}
         `;
@@ -961,7 +968,7 @@ async function submitTransfert(){
 }
 
 function resetTransfert(){
-  ['ft-operateur','ft-cuve-src','ft-cuve-dst','ft-litres','ft-obs','ft-confie'].forEach(id=>{
+  ['ft-operateur','ft-cuve-src','ft-cuve-dst','ft-personne-dst','ft-litres','ft-obs'].forEach(id=>{
     const el=document.getElementById(id); if(el) el.value='';
   });
   FT_REQ.forEach(id=>{
@@ -1013,29 +1020,42 @@ function onFtOperateur(){
 }
 
 
-const CUVES_CHANTIER = ['2 GNR 600','3 GNR 600','4 GNR 400','7 GNR 400 SXM','8 GNR 200'];
-const CUVE_OPERATEUR = {
-  '2 GNR 600':     'Clyde Pelmar',
-  '3 GNR 600':     'Stéphane Moutoucarpin',
-  '4 GNR 400':     'Yannis Appatore',
-  '7 GNR 400 SXM': '',
-  '8 GNR 200':     'Tanguy Henri',
+const PERSONNE_CUVES = {
+  'Clyde Pelmar':          ['2 GNR 600'],
+  'Stéphane Moutoucarpin': ['3 GNR 600'],
+  'Yannis Appatore':       ['4 GNR 400', '8 GNR 200'],
+  'Tanguy Henri':          ['8 GNR 200', '4 GNR 400'],
+};
+const CUVES_LABEL = {
+  '2 GNR 600':     '2 GNR 600 — Cuve 600L',
+  '3 GNR 600':     '3 GNR 600 — Cuve 600L',
+  '4 GNR 400':     '4 GNR 400 — Cuve 400L',
+  '7 GNR 400 SXM': '7 GNR 400 SXM — Cuve 400L SXM',
+  '8 GNR 200':     '8 GNR 200 — Cuve 200L',
 };
 
-function onFtCuveDst(){
+function onPersonneDst(){
+  const personne = document.getElementById('ft-personne-dst').value;
+  const wrap     = document.getElementById('dst-cuve-wrap');
+  const sel      = document.getElementById('ft-cuve-dst');
   ftTouch('ft-cuve-dst');
-  const val  = document.getElementById('ft-cuve-dst').value;
-  const wrap = document.getElementById('confie-wrap');
-  const inp  = document.getElementById('ft-confie');
-  if(CUVES_CHANTIER.includes(val)){
-    wrap.style.display = 'block';
-    inp.value = CUVE_OPERATEUR[val] || '';
-  } else {
-    wrap.style.display = 'none';
-    inp.value = '';
-  }
+  if(!personne){ wrap.style.display='none'; sel.value=''; ftUpdateProgress(); return; }
+  const cuves = PERSONNE_CUVES[personne] || [];
+  sel.innerHTML = '<option value="">—</option>';
+  cuves.forEach((c,i)=>{
+    const opt = document.createElement('option');
+    opt.value = c;
+    opt.textContent = CUVES_LABEL[c] || c;
+    if(i===0) opt.selected = true;
+    sel.appendChild(opt);
+  });
+  wrap.style.display = 'block';
+  if(cuves.length===1){ sel.disabled = true; } else { sel.disabled = false; }
+  ftTouch('ft-cuve-dst');
   ftUpdateProgress();
 }
+
+function onFtCuveDst(){ /* kept for compatibility */ ftTouch('ft-cuve-dst'); ftUpdateProgress(); }
 
 </script>
 </body>
