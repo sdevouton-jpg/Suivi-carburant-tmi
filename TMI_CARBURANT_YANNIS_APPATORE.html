@@ -116,7 +116,7 @@ button[type="submit"].ready{animation:pb 2s infinite}
 <main>
   <div class="cuves-banner">
     <strong>Cuves autorisées — profil Chantier</strong>
-    2 GNR 600 · 3 GNR 600 · 4 GNR 400 · 7 GNR 400 SXM · GR STATION CAP · SP STATION CAP
+    2 GNR 600 · 3 GNR 600 · 4 GNR 400 · 7 GNR 400 SXM · 8 GNR 200 · GR STATION CAP · SP STATION CAP
   </div>
 
   <div class="sl">Chauffeur</div>
@@ -161,19 +161,17 @@ button[type="submit"].ready{animation:pb 2s infinite}
       <label>N° IXBAT / Identifiant <span class="req">*</span></label>
       <select id="materiel" onchange="onMat()">
         <option value="">— Sélectionner —</option>
-        <option value="LOCATION">LOCATION — Location - location matériel</option>
-<option value="MULTI">MULTI — MULTI-ENGINS</option>
-<option value="POMPE A BOUE">POMPE A BOUE — POMPE A BOUE</option>
-<option value="BIDON">BIDON — BIDON</option>
-<option value="CUVE">CUVE — CUVE</option>
-<option value="HC-033-QP">HC-033-QP — Pick-up HC-033-QP</option>
-<option value="HD-479-SQ">HD-479-SQ — Pick-up HD-479-SQ</option>
-<option value="GL-071-GZ">GL-071-GZ — FORD RANGER GL-071-GZ</option>
-<option value="GL-108-GZ">GL-108-GZ — FORD RANGER GL-108-GZ</option>
-<option value="HC-533-SQ">HC-533-SQ — HUYNDAI KONA HC-533-SQ</option>
-<option value="HC-545-SQ">HC-545-SQ — HUYNDAI KONA HC-545-SQ</option>
-<option value="HC-391-NM">HC-391-NM — DACIA DUSTER HC-391-NM</option>
-<option value="GT-031-HA">GT-031-HA — VP location Cyrille Patrick</option>
+        <optgroup label="── Camions & Bennes ──">
+<option value="000022">000022 — AJ-796-BG CAMION AMPLIROLL RENAULT</option>
+<option value="000023">000023 — HC-746-HB CAMION BENNE MAN TGE</option>
+<option value="000024">000024 — HC-375-HB CAMION GRUE BENNE MAN TGE</option>
+<option value="000025">000025 — HC-061-HB DOUBLE CABINE BENNE MAN TGE</option>
+<option value="000074">000074 — HE-277-YT CAMION IVECO BENNE</option>
+<option value="000075">000075 — HE-674-ZN CAMION BENNE MAN TGE</option>
+<option value="000089">000089 — HJ-429-AS CAMION BENNE MAN TGE</option>
+<option value="000088">000088 — HJ-445-AT FOURGON MAN TGE ATELIER</option>
+        </optgroup>
+        <optgroup label="── Pelles ──">
 <option value="000001">000001 — PELLE 6T XE60 DA 1</option>
 <option value="000002">000002 — PELLE 6T XE60 DA 2</option>
 <option value="000003">000003 — PELLE 6T XE60 DA 3</option>
@@ -182,67 +180,79 @@ button[type="submit"].ready{animation:pb 2s infinite}
 <option value="000006">000006 — PELLE 2.8T XE27E 2</option>
 <option value="000007">000007 — PELLE 2.8T XE27E 3</option>
 <option value="000008">000008 — PELLE 2.8T XE27E 4</option>
-<option value="000009">000009 — PELLE2.8T XE27E 5</option>
+<option value="000009">000009 — PELLE 2.8T XE27E 5</option>
 <option value="000010">000010 — PELLE 2.8T XE27E 6</option>
 <option value="000011">000011 — PELLE 2.8T XE27E 7</option>
+<option value="000060">000060 — PELLE 2.8T XE27E 8</option>
 <option value="000012">000012 — PELLE 16T A ROUE 1</option>
 <option value="000013">000013 — PELLE 16T A ROUE 2</option>
-<option value="000014">000014 — CHARGEUSE PELLETEUSE XC7-SR10 XCMG</option>
-<option value="000015">000015 — MINI BOUILLE 7.13 KG  2000L TICAB SUR CAMIONNETTE</option>
-<option value="000016">000016 — FINISSEUR RP705 17.5T</option>
-<option value="000017">000017 — MINI FINISSEUR RP355 8T</option>
-<option value="000018">000018 — RABOTEUSE XM1505F 20.65T</option>
+<option value="000084">000084 — PELLE 15T XE155UCR XCMG</option>
+        </optgroup>
+        <optgroup label="── Compacteurs & Plaques ──">
 <option value="000019">000019 — COMPACTEUR HAMM HD 128 13T</option>
 <option value="000020">000020 — BI-CYLINDRE XCMG N°1 XD120</option>
 <option value="000021">000021 — BI-CYLINDRE XCMG N°2 XD120</option>
-<option value="000022">000022 — AJ-796-BG CAMION AMPLIROLL RENAULT</option>
-<option value="000023">000023 — HC-746-HB CAMION BENNE 3.5T MAN TGE</option>
-<option value="000024">000024 — HC-375-HB CAMION GRUE BENNE 3.5T MAN TGE</option>
-<option value="000025">000025 — HC-061-HB DOUBLE CABINE BENNE MAN TGE</option>
-<option value="000026">000026 — CHARIOT TELESCOPIQUE MT1440 MANITOU 4T</option>
-<option value="000027">000027 — POMPE BETON XCMG XS5008D 4.7T</option>
-<option value="000028">000028 — COMPRESSEUR 17 KL KAESER</option>
-<option value="000029">000029 — COMPRESSEUR  24m3 ATLAS COPCO  XHAS 408-30</option>
-<option value="000030">000030 — FOREUSE MC8 HT COMACCHIO 8.6T</option>
-<option value="000031">000031 — FOREUSE XCMG XLS4 200B 9T</option>
-<option value="000032">000032 — GLISSIERRE FORAGE 1 MR2-PN MARINI</option>
-<option value="000033">000033 — GLISSIERRE FORAGE 2 MR2-PN MARINI</option>
-<option value="000034">000034 — MALAXEUR 290KG AIR FOURMIFOR 150L-BSP15 P4 2016</option>
-<option value="000035">000035 — MINI AIR GROUT</option>
-<option value="000036">000036 — MALAXEUR PRIOMIX</option>
-<option value="000037">000037 — MIXEUR-AGIGATEUR-INJECTEURDE/OL80-T300-AG500 1.2T</option>
-<option value="000038">000038 — GUNITEUSE MG305 ARNABAT Béton projeté</option>
-<option value="000039">000039 — MONTABERT P21 -N°1</option>
-<option value="000040">000040 — MONTABERT P21 -N°2</option>
-<option value="000060">000060 — PELLE 2.8T XE27E 1 XUGA0275TSKA02176</option>
-<option value="000061">000061 — COMPACTEUR 800KG XMR083 N°1 XUG008I7LPJE04067</option>
-<option value="000062">000062 — COMPACTEUR 800KG XMR083 N°2 XUG008l7HPJE04068</option>
-<option value="000063">000063 — COMPACTEUR 800KG XMR083 N°3 XUG008l7EPJE04069</option>
-<option value="000064">000064 — Pilonneuse BS68 - 1</option>
-<option value="000065">000065 — Pilonneuse BS68 - 2</option>
-<option value="000066">000066 — Pilonneuse BS68 - 3</option>
-<option value="000067">000067 — Pilonneuse BS68 - 4</option>
-<option value="000068">000068 — PLAQUE VIBRANTE 80KG LFV80 HUSQUAVARNA</option>
-<option value="000069">000069 — PLAQUE VIBRANTE 95KG LF 100 HUSQUAVARNA</option>
-<option value="000070">000070 — PLAQUE VIBRANTE 85KG PGX 12/36 ALTRAD</option>
-<option value="000071">000071 — SCIE A SOL HUSQUAVARNA FS400LV</option>
+<option value="000087">000087 — BI-CYLINDRE XCMG N°3 XD120S IV</option>
+<option value="000061">000061 — COMPACTEUR 800KG XMR083 N°1</option>
+<option value="000062">000062 — COMPACTEUR 800KG XMR083 N°2</option>
+<option value="000063">000063 — COMPACTEUR 800KG XMR083 N°3</option>
 <option value="000072">000072 — PLAQUE VIBRANTE 385KG AMMANN</option>
 <option value="000073">000073 — PLAQUE VIBRANTE 397KG AMMANN</option>
-<option value="000074">000074 — HE-277-YT CAMION IVECO BENNE</option>
-<option value="000075">000075 — HE-674-ZN CAMION BENNE 3.5T MAN TGE</option>
-<option value="000076">000076 — GROUPE ELECTROGENE CUMMINS 55KVA C55D5EQ</option>
-<option value="000077">000077 — GROUPE ELECTROGENE CUMMINS 55KVA C55D5EQ</option>
-<option value="000078">000078 — Compresseur 5m3 Atlas Copco XAS88 KD G4 SQ</option>
-<option value="000079">000079 — Compresseur 17m3 Air X-Air + 600-17 CUD G4 SQ</option>
-<option value="000080">000080 — CHARIOT TELESCOPIQUE 11.2T XCMG XT4014KH</option>
 <option value="000082">000082 — PLAQUE VIBRANTE 385KG AMMANN</option>
 <option value="000083">000083 — PIEDS DE MOUTON 1450KG AMMANN</option>
-<option value="000084">000084 — PELLE 15T XE155UCR XCMG</option>
-<option value="000085">000085 — RABOTEUSE 1m XM1005F 171 Kg</option>
-<option value="000086">000086 — CHARIOT ELEVATEUR  4T - HELI CPCD40 G3 V35-92C41</option>
-<option value="000087">000087 — BI-CYLINDRE XCMG N°3 XD120S IV</option>
-<option value="000088">000088 — HJ-445-AT FOURGON MAN TGE TOLLE ATTELIER</option>
-<option value="000089">000089 — HJ-429-AS CAMION BENNE 3.5T MAN TGE</option>
+<option value="000068">000068 — PLAQUE VIBRANTE 80KG LFV80 HUSQVARNA</option>
+<option value="000069">000069 — PLAQUE VIBRANTE 95KG LF 100 HUSQVARNA</option>
+<option value="000070">000070 — PLAQUE VIBRANTE 85KG PGX 12/36 ALTRAD</option>
+<option value="000071">000071 — SCIE A SOL HUSQVARNA FS400LV</option>
+<option value="000064">000064 — PILONNEUSE BS68 N°1</option>
+<option value="000065">000065 — PILONNEUSE BS68 N°2</option>
+<option value="000066">000066 — PILONNEUSE BS68 N°3</option>
+<option value="000067">000067 — PILONNEUSE BS68 N°4</option>
+        </optgroup>
+        <optgroup label="── Engins de levage & manutention ──">
+<option value="000014">000014 — CHARGEUSE PELLETEUSE XC7-SR10 XCMG</option>
+<option value="000026">000026 — CHARIOT TELESCOPIQUE MT1440 MANITOU 4T</option>
+<option value="000080">000080 — CHARIOT TELESCOPIQUE 11.2T XCMG XT4014KH</option>
+<option value="000086">000086 — CHARIOT ELEVATEUR 4T HELI CPCD40</option>
+        </optgroup>
+        <optgroup label="── Finisseurs & Raboteuses ──">
+<option value="000016">000016 — FINISSEUR RP705 17.5T</option>
+<option value="000017">000017 — MINI FINISSEUR RP355 8T</option>
+<option value="000018">000018 — RABOTEUSE XM1505F 20.65T</option>
+<option value="000085">000085 — RABOTEUSE 1m XM1005F</option>
+        </optgroup>
+        <optgroup label="── Foreuses & Injection ──">
+<option value="000030">000030 — FOREUSE MC8 HT COMACCHIO 8.6T</option>
+<option value="000031">000031 — FOREUSE XCMG XLS4 200B 9T</option>
+<option value="000032">000032 — GLISSIERE FORAGE 1 MR2-PN MARINI</option>
+<option value="000033">000033 — GLISSIERE FORAGE 2 MR2-PN MARINI</option>
+<option value="000034">000034 — MALAXEUR 290KG FOURMIFOR 150L</option>
+<option value="000035">000035 — MINI AIR GROUT</option>
+<option value="000036">000036 — MALAXEUR PRIOMIX</option>
+<option value="000037">000037 — MIXEUR-AGITATEUR-INJECTEUR OL80</option>
+<option value="000038">000038 — GUNITEUSE MG305 ARNABAT</option>
+<option value="000039">000039 — MONTABERT P21 N°1</option>
+<option value="000040">000040 — MONTABERT P21 N°2</option>
+<option value="000027">000027 — POMPE BETON XCMG XS5008D 4.7T</option>
+<option value="000015">000015 — MINI BOUILLE TICAB 2000L SUR CAMIONNETTE</option>
+        </optgroup>
+        <optgroup label="── Compresseurs & Groupes ──">
+<option value="000028">000028 — COMPRESSEUR 17M3 KAESER</option>
+<option value="000029">000029 — COMPRESSEUR 24M3 ATLAS COPCO XHAS 408</option>
+<option value="000078">000078 — COMPRESSEUR 5M3 ATLAS COPCO XAS88</option>
+<option value="000079">000079 — COMPRESSEUR 17M3 AIR X-AIR 600</option>
+<option value="000076">000076 — GROUPE ELECTROGENE CUMMINS 55KVA N°1</option>
+<option value="000077">000077 — GROUPE ELECTROGENE CUMMINS 55KVA N°2</option>
+        </optgroup>
+        <optgroup label="── Véhicules légers ──">
+<option value="HC-033-QP">HC-033-QP — PICK-UP HC-033-QP</option>
+<option value="HD-479-SQ">HD-479-SQ — PICK-UP HD-479-SQ</option>
+        </optgroup>
+        <optgroup label="── Autre ──">
+<option value="BIDON">BIDON — BIDON</option>
+<option value="LOCATION">LOCATION — Location matériel</option>
+<option value="POMPE A BOUE">POMPE A BOUE — POMPE A BOUE</option>
+        </optgroup>
       </select>
       <div class="mat-hint" id="mat-hint">
         <strong id="mat-nom">—</strong>
@@ -251,6 +261,38 @@ button[type="submit"].ready{animation:pb 2s infinite}
       <div class="err">Champ obligatoire</div>
     </div>
   </div>
+
+
+  <div class="sl">Chantier</div>
+  <div class="card">
+    <div class="field" id="field-chantier">
+      <label>Chantier d'affectation <span class="req">*</span></label>
+      <select id="chantier" onchange="touch('chantier')">
+        <option value="">— Sélectionner —</option>
+        
+<option>QUAI12 - GPMG</option>
+<option>PETIT CANAL - SMGEAG</option>
+<option>FORAGE D'EAU - SMGEAG</option>
+<option>BERGEVIN - Sikoa</option>
+<option>AMEDEE FENGAROL - Département</option>
+<option>ROUTHIER - Département</option>
+<option>ACC VIEUX FORT - Département</option>
+<option>AEP SAINT-ANNE impasse VALLIER - Département</option>
+<option>AEP SAINT FRANCOIS RD116 Tranche Delgres - Département</option>
+<option>TS RD6 Vieux Fort Route de Tibois coté droit - Département</option>
+<option>RD13 école Nathalien ETNA à Vieux- Habitants - Département</option>
+<option>Route de Tibois Vieux Fort - Département</option>
+<option>MICROPIEUX DE LA RESIDENCE LES GOYAVIERS -GTM</option>
+<option>CLASS - Vieux habitant</option>
+<option>REHAB CRECHE - Vieux habitant</option>
+<option>BELLE PLAINE - Gosier</option>
+<option>CHANTIER ENROBE DIVERS</option>
+<option>CHANTIER DIVERS</option>
+      </select>
+      <div class="err">Champ obligatoire</div>
+    </div>
+  </div>
+
 
   <div class="sl">Cuve & Carburant</div>
   <div class="card">
@@ -262,6 +304,7 @@ button[type="submit"].ready{animation:pb 2s infinite}
 <option value="3 GNR 600" data-carb="GNR">3 GNR 600 — Cuve 600L</option>
 <option value="4 GNR 400" data-carb="GNR">4 GNR 400 — Cuve 400L</option>
 <option value="7 GNR 400 SXM" data-carb="GNR">7 GNR 400 SXM — Cuve 400L SXM</option>
+<option value="8 GNR 200" data-carb="GNR">8 GNR 200 — Cuve 200L</option>
 <option value="GR STATION CAP" data-carb="Gasoil">GR STATION CAP — Gasoil CAP</option>
 <option value="SP STATION CAP" data-carb="SP Station">SP STATION CAP — SP CAP</option>
       </select>
@@ -298,6 +341,7 @@ button[type="submit"].ready{animation:pb 2s infinite}
         <input type="number" id="compteur" placeholder="—" min="0" inputmode="numeric" oninput="touch('compteur')" onchange="touch('compteur')">
         <span class="unit">km</span>
       </div>
+      <div id="compteur-last" style="display:none;font-size:11px;color:var(--fuel);margin-top:5px;padding:5px 8px;background:rgba(139,92,246,0.08);border-radius:6px;border-left:2px solid var(--fuel)"></div>
       <div class="err">Champ obligatoire</div>
     </div>
   </div>
@@ -333,36 +377,6 @@ button[type="submit"].ready{animation:pb 2s infinite}
     </div>
   </div>
 
-  <div class="sl">Chantier</div>
-  <div class="card">
-    <div class="field" id="field-chantier">
-      <label>Chantier d'affectation <span class="req">*</span></label>
-      <select id="chantier" onchange="touch('chantier')">
-        <option value="">— Sélectionner —</option>
-        <option>DEPOT - FRAIS GENERAUX</option>
-<option>QUAI12 - GPMG</option>
-<option>PETIT CANAL - SMGEAG</option>
-<option>FORAGE D'EAU - SMGEAG</option>
-<option>BERGEVIN - Sikoa</option>
-<option>AMEDEE FENGAROL - Département</option>
-<option>ROUTHIER - Département</option>
-<option>ACC VIEUX FORT - Département</option>
-<option>AEP SAINT-ANNE impasse VALLIER - Département</option>
-<option>AEP SAINT FRANCOIS RD116 Tranche Delgres - Département</option>
-<option>TS RD6 Vieux Fort Route de Tibois coté droit - Département</option>
-<option>RD13 école Nathalien ETNA à Vieux- Habitants - Département</option>
-<option>Route de Tibois Vieux Fort - Département</option>
-<option>MICROPIEUX DE LA RESIDENCE LES GOYAVIERS -GTM</option>
-<option>CLASS - Vieux habitant</option>
-<option>REHAB CRECHE - Vieux habitant</option>
-<option>BELLE PLAINE - Gosier</option>
-<option>CHANTIER ENROBE DIVERS</option>
-<option>CHANTIER DIVERS</option>
-<option>LOCATION</option>
-      </select>
-      <div class="err">Champ obligatoire</div>
-    </div>
-  </div>
 
   <div class="sl">Détails</div>
   <div class="card">
@@ -370,9 +384,10 @@ button[type="submit"].ready{animation:pb 2s infinite}
       <label>Date <span class="req">*</span></label>
       <input type="date" id="date-saisie">
     </div>
-    <div class="field">
-      <label>Observation <span class="opt">optionnel</span></label>
-      <textarea id="obs" placeholder="Anomalie, panne, remarque..."></textarea>
+    <div class="field" id="field-obs">
+      <label>Observation <span class="opt" id="obs-badge">optionnel</span><span class="req" id="obs-req" style="display:none">*</span></label>
+      <textarea id="obs" placeholder="Anomalie, panne, remarque..." oninput="touchObs()"></textarea>
+      <div class="err">Précisez le matériel / numéro de location ou bidon</div>
     </div>
   </div>
 </main>
@@ -426,7 +441,7 @@ async function uploadToCloudinary(base64Data, fileName) {
 
 const RESP_NOM   = "Yannis Appatore";
 const RESP_ID    = "YANNIS";
-const CUVE_CARB  = {"2 GNR 600":"GNR","3 GNR 600":"GNR","4 GNR 400":"GNR","7 GNR 400 SXM":"GNR","GR STATION CAP":"Gasoil","SP STATION CAP":"SP Station"};
+const CUVE_CARB  = {"2 GNR 600":"GNR","3 GNR 600":"GNR","4 GNR 400":"GNR","7 GNR 400 SXM":"GNR","8 GNR 200":"GNR","GR STATION CAP":"Gasoil","SP STATION CAP":"SP Station"};
 
 // Référentiel matériels pour affichage hint
 const MAT_NOMS = {};
@@ -463,8 +478,11 @@ function updateClock(){
   document.getElementById('hdr-dt').textContent=`${D[n.getDay()]} ${n.getDate()} ${M[n.getMonth()]} ${n.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}`;
 }
 function isOk(r){
-  const el=document.getElementById(r.id),v=el?el.value:'';
-  return v&&(r.t!=='number'||parseFloat(v)>0);
+  const el=document.getElementById(r.id),v=el?el.value.trim():'';
+  if(r.t==='number') return v!==''&&parseFloat(v)>0;
+  if(r.t==='obs')    return v.length>0;
+  if(r.t==='hidden') return v!=='';
+  return v!=='';
 }
 function updateProgress(){
   let filled=0;
@@ -497,12 +515,38 @@ function onMat(){
   }else{
     hint.classList.remove('show');
   }
+  setObsRequired(v==='BIDON'||v==='LOCATION');
   loadLastCompteur(v);
+  updateProgress();
+}
+function setObsRequired(needed){
+  const badge=document.getElementById('obs-badge');
+  const req=document.getElementById('obs-req');
+  const field=document.getElementById('field-obs');
+  if(badge) badge.style.display=needed?'none':'inline';
+  if(req)   req.style.display  =needed?'inline':'none';
+  const already=REQ.findIndex(r=>r.id==='obs');
+  if(needed && already===-1){
+    REQ.push({f:'field-obs',id:'obs',t:'obs'});
+    rebuildDots();
+  } else if(!needed && already!==-1){
+    REQ.splice(already,1);
+    if(field) field.classList.remove('error','valid');
+    rebuildDots();
+  }
+}
+function touchObs(){
+  touch('obs');
+}
+function rebuildDots(){
+  document.getElementById('dots-row').innerHTML=REQ.map((_,i)=>`<div class="dot-f" id="dot-${i}"></div>`).join('');
+  updateProgress();
 }
 function onCuve(){
   touch('cuve');
   const v=document.getElementById('cuve').value;
-  if(v&&CUVE_CARB[v]) setCarb(CUVE_CARB[v]);
+  if(v&&CUVE_CARB[v]){ setCarb(CUVE_CARB[v]); }
+  updateProgress();
 }
 function pickChip(el,val){
   document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
@@ -524,13 +568,16 @@ function loadLastCompteur(materielId) {
   fetch(SCRIPT_URL + '?materiel=' + encodeURIComponent(materielId))
     .then(r => r.json())
     .then(data => {
-      if (data.status === 'success' && data.compteur !== '') {
+      if (data.status === 'success' && data.compteur !== undefined && data.compteur !== '') {
         const field = document.getElementById('compteur');
+        const hint = document.getElementById('compteur-last');
         if (field && !field.value) {
-          field.value = data.compteur;
-          field.style.borderColor = 'var(--success)';
-          field.title = 'Dernière valeur enregistrée';
+          field.placeholder = 'Dernier: ' + data.compteur;
         }
+        if(hint) { hint.textContent = '📍 Dernier relevé : ' + data.compteur; hint.style.display='block'; }
+      } else {
+        const hint = document.getElementById('compteur-last');
+        if(hint) hint.style.display='none';
       }
     })
     .catch(() => {});
@@ -636,6 +683,7 @@ function newForm(){
   document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
   document.querySelectorAll('.field').forEach(f=>{f.classList.remove('error','valid');});
   document.getElementById('mat-hint').classList.remove('show');
+  setObsRequired(false);
   rmPhoto({preventDefault:()=>{},stopPropagation:()=>{}});
   touched={};
   document.getElementById('date-saisie').value=new Date().toISOString().split('T')[0];
