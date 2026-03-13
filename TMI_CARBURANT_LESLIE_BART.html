@@ -422,7 +422,7 @@ button[type="submit"].ready{animation:pb 2s infinite}
 
   <!-- ═══ FORMULAIRE TRANSFERT ═══ -->
   <div id="form-transfert" style="display:none">
-    <div class="sl" style="background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff">⇄ TRANSFERT cuve → cuve cuve → cuve</div>
+    <div class="sl" style="background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff">⇄ TRANSFERT cuve → cuve</div>
     <div class="card">
       <div class="field" id="ft-field-operateur">
         <label>Opérateur <span class="req">*</span></label>
@@ -435,7 +435,7 @@ button[type="submit"].ready{animation:pb 2s infinite}
     <div class="sl">Cuves</div>
     <div class="card">
       <div class="field" id="ft-field-cuve-src">
-        <label>Cuve source (donne) <span class="req">*</span></label>
+        <label>Cuve source <span class="req">*</span></label>
         <select id="ft-cuve-src" onchange="ftTouch('ft-cuve-src')">
         <option value="">— Sélectionner —</option>
         <option value="0 GNR 5000">0 GNR 5000 — Cuve principale 5000L</option>
@@ -451,7 +451,7 @@ button[type="submit"].ready{animation:pb 2s infinite}
         <div class="err">Champ obligatoire</div>
       </div>
       <div class="field" id="ft-field-cuve-dst">
-        <label>Cuve destination (reçoit) <span class="req">*</span></label>
+        <label>Cuve destination <span class="req">*</span></label>
         <select id="ft-cuve-dst" onchange="onFtCuveDst()">
         <option value="">— Sélectionner —</option>
         <option value="0 GNR 5000">0 GNR 5000 — Cuve principale 5000L</option>
@@ -475,7 +475,7 @@ button[type="submit"].ready{animation:pb 2s infinite}
       </div>
     </div>
 
-    <div class="sl">Photo compteur cuve source <span class="badge-rec">Recommandée</span></div>
+    <div class="sl">Photo cuve source <span class="badge-rec">Recommandée</span></div>
     <div class="card">
       <div class="field">
         <label>Photo compteur <span class="opt">optionnel</span></label>
@@ -490,7 +490,7 @@ button[type="submit"].ready{animation:pb 2s infinite}
         </div>
       </div>
     </div>
-    <div class="sl">Volume</div>
+    <div class="sl">Volume transféré</div>
     <div class="card">
       <div class="field" id="ft-field-litres">
         <label>Litres transférés <span class="req">*</span></label>
@@ -502,7 +502,7 @@ button[type="submit"].ready{animation:pb 2s infinite}
       </div>
     </div>
 
-    <div class="sl">Observation <span style="font-weight:400;font-size:12px">(optionnel)</span></div>
+    <div class="sl">Observation</div>
     <div class="card">
       <div class="field" id="ft-field-obs">
         <textarea id="ft-obs" placeholder="Remarque sur le transfert..." rows="2" style="width:100%;box-sizing:border-box;padding:10px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;resize:vertical"></textarea>
@@ -519,7 +519,7 @@ button[type="submit"].ready{animation:pb 2s infinite}
 
     <div class="btn-submit">
       <button id="ft-btn-val" class="btn-val" onclick="submitTransfert()" disabled>
-        <span>⇄ Valider le transfert</span>
+        <span>VALIDER LE TRANSFERT</span>
       </button>
     </div>
   </div>
@@ -549,7 +549,7 @@ button[type="submit"].ready{animation:pb 2s infinite}
 </div>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbybgh8lDRwswsJ7XRzbnGwmC28OU_z1KJEv7zYn6xlRPRHwKPN41WqueL3eomBBYelC/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby_sPNvI8OFjjHAEz2_m4LADMs1cGpT3TIpttpUN6Wdaca-4z_kaKxXGlZvjPkX1g-YeA/exec";
 const CLOUDINARY_CLOUD = "diykly4wp";
 const CLOUDINARY_PRESET = "tmi_carburant";
 
@@ -900,28 +900,50 @@ async function submitTransfert(){
 
   function doSendTransfert(){
     document.getElementById('sending').classList.add('show');
-    fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify(entry)})
-  .then(r=>r.json())
-  .then(data=>{
-    document.getElementById('sending').classList.remove('show');
-    if(data.status==='success'){
-      document.getElementById('rbox').innerHTML=`
-        <div class="row"><span>Date</span><span>${entry.date}</span></div>
-        <div class="row"><span>Responsable</span><span>${RESP_NOM}</span></div>
-        <div class="row"><span>Opérateur</span><span>${entry.utilisateur}</span></div>
-        <div class="row"><span>Type</span><span>⇄ TRANSFERT</span></div>
-        <div class="row"><span>Cuve source</span><span>${src}</span></div>
-        <div class="row"><span>Cuve destination</span><span>${dst}</span></div>
-        <div class="row"><span>Volume</span><span>${entry.litres} L</span></div>
-        ${entry.obs?`<div class="row"><span>Obs.</span><span>${entry.obs}</span></div>`:''}
-      `;
-      document.getElementById('rphoto').style.display='none';
-      document.getElementById('overlay').classList.add('show');
-    } else {
-      alert('Erreur envoi : '+(data.message||'inconnue'));
-    }
-  })
-  .catch(()=>{ document.getElementById('sending').classList.remove('show'); alert('Erreur réseau.'); });
+
+    // Ligne 1 : cuve SOURCE — litres NÉGATIFS (sortie)
+    const entrySrc = Object.assign({}, entry, {
+      cuve: src,
+      litres: -Math.abs(entry.litres),
+      cuve_dest: ''
+    });
+
+    // Ligne 2 : cuve DESTINATION — litres POSITIFS (entrée)
+    const entryDst = Object.assign({}, entry, {
+      cuve: dst,
+      litres: Math.abs(entry.litres),
+      cuve_dest: '',
+      photo: '',
+      photo2: ''
+    });
+
+    // Envoi séquentiel : d'abord la ligne source, puis la ligne destination
+    fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify(entrySrc)})
+    .then(r=>r.json())
+    .then(data=>{
+      if(data.status!=='success') throw new Error(data.message||'Erreur ligne source');
+      return fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify(entryDst)});
+    })
+    .then(r=>r.json())
+    .then(data=>{
+      document.getElementById('sending').classList.remove('show');
+      if(data.status==='success'){
+        document.getElementById('rbox').innerHTML=`
+          <div class="row"><span>Date</span><span>${entry.date}</span></div>
+          <div class="row"><span>Responsable</span><span>${RESP_NOM}</span></div>
+          <div class="row"><span>Opérateur</span><span>${entry.utilisateur}</span></div>
+          <div class="row"><span>Type</span><span>⇄ TRANSFERT</span></div>
+          <div class="row"><span>Cuve source</span><span>${src} <span style="color:#ef4444">−${entry.litres} L</span></span></div>
+          <div class="row"><span>Cuve destination</span><span>${dst} <span style="color:#22c55e">+${entry.litres} L</span></span></div>
+          ${entry.obs?`<div class="row"><span>Obs.</span><span>${entry.obs}</span>`:''}
+        `;
+        document.getElementById('rphoto').style.display='none';
+        document.getElementById('overlay').classList.add('show');
+      } else {
+        alert('Erreur envoi ligne destination : '+(data.message||'inconnue'));
+      }
+    })
+    .catch(err=>{ document.getElementById('sending').classList.remove('show'); alert('Erreur réseau : '+err.message); });
   }
 
   if(ftPhotoFile){
