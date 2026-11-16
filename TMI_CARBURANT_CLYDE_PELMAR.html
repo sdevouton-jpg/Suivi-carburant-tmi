@@ -484,8 +484,9 @@ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby_sPNvI8OFjjHAEz2_m
 function dateLocale(){const d=new Date();const p=n=>String(n).padStart(2,'0');return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate());}
 function uneLigne(s){return String(s||'').replace(/[\r\n]+/g,' ').replace(/\s{2,}/g,' ').trim();}
 let envoiEnCours=false;
-function dejaEnvoye(sig){try{const d=JSON.parse(sessionStorage.getItem('tmi_last')||'null');return d&&d.sig===sig&&(Date.now()-d.t)<15*60*1000;}catch(e){return false;}}
-function memoEnvoi(sig){try{sessionStorage.setItem('tmi_last',JSON.stringify({sig:sig,t:Date.now()}));}catch(e){}}
+function envoisRecents(){try{const l=JSON.parse(localStorage.getItem('tmi_envois')||'[]');return Array.isArray(l)?l.filter(x=>Date.now()-x.t<12*3600*1000):[];}catch(e){return [];}}
+function dejaEnvoye(sig){return envoisRecents().some(x=>x.sig===sig);}
+function memoEnvoi(sig){try{const l=envoisRecents().filter(x=>x.sig!==sig);l.push({sig:sig,t:Date.now()});localStorage.setItem('tmi_envois',JSON.stringify(l.slice(-50)));}catch(e){}}
 async function postAvecReessai(body,essais){for(let i=0;i<essais;i++){try{const r=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify(body)});const d=await r.json();if(d.status==='success')return d;if(i===essais-1)return d;}catch(e){if(i===essais-1)throw e;}await new Promise(res=>setTimeout(res,1500));}}
 
 const CLOUDINARY_CLOUD = "diykly4wp";
@@ -721,8 +722,8 @@ async function submitForm(){
   };
   const sig=[entry.date,entry.materiel,entry.cuve,entry.litres,entry.compteur].join('|');
   if(envoiEnCours) return;
-  if(dejaEnvoye(sig)&&!confirm('Ce plein (même engin, même volume, même compteur) vient déjà d\'être envoyé. L\'envoyer une 2e fois ?')) return;
-  envoiEnCours=true; document.getElementById('btn-val').disabled=true;
+  if(dejaEnvoye(sig)&&!confirm('ATTENTION : ce plein (même engin, même volume, même compteur) a déjà été envoyé depuis ce téléphone aujourd\'hui. Il est sans doute déjà enregistré.\n\nL\'envoyer quand même une 2e fois ?')) return;
+  envoiEnCours=true; document.getElementById('btn-val').disabled=true; memoEnvoi(sig);
   document.getElementById('sending').classList.add('show');
   const baseName = entry.date.replace(/\//g,'-') + '_' + entry.responsable_id + '_' + entry.materiel;
   entry.photo = await uploadToCloudinary(photoB64, baseName + '_COMPTEUR.jpg');
@@ -731,6 +732,7 @@ async function submitForm(){
   .then(r=>r.json())
   .then(data=>{
     document.getElementById('sending').classList.remove('show');
+    if(data.doublon){ alert('Ce plein était déjà enregistré'+(data.message?' ('+data.message+')':'')+'. Il n\'a pas été ajouté une deuxième fois.'); }
     if(data.status==='success'){ memoEnvoi(sig); }
     else { envoiEnCours=false; document.getElementById('btn-val').disabled=false; }
     if(data.status==='success'){
@@ -752,7 +754,7 @@ async function submitForm(){
   .catch(()=>{
     envoiEnCours=false; document.getElementById('btn-val').disabled=false;
     document.getElementById('sending').classList.remove('show');
-    alert('Erreur reseau. Verifiez votre connexion et reessayez.');
+    alert('Erreur réseau : le plein a PEUT-ÊTRE déjà été enregistré. Avant de renvoyer, demandez au bureau de vérifier, ou attendez quelques minutes.');
   });
 }
 function newForm(){
